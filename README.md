@@ -12,11 +12,11 @@ List any prerequisites or dependencies that need to be installed before running 
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/your-mvc-project.git
+   git clone https://github.com/OussamaBL/Wikis.git
 
 2. Navigate to the project directory:
     ```bash
-    cd your-mvc-project
+    cd Wikis
 
 3. Install dependencies using Composer:
     ```bash
