@@ -60,4 +60,11 @@ abstract class Crud implements CrudInterface
 
         return $stmt->rowCount();
     }
+    public function select_auth(string $email)
+    {
+        $sql = "select * from users where email = ?";
+        $stmt = connexion::$pdo->prepare($sql);
+        $stmt->execute([$email]);
+        return $stmt->rowCount() > 0 ? $stmt->fetch(PDO::FETCH_OBJ) : null;
+    }
 }

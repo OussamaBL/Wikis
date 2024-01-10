@@ -7,7 +7,7 @@ class User extends CrudAlias
     private int $id;
     private string $name;
     private string $email;
-    private string $cin;
+
     private string $password;
     private string $role;
 
@@ -20,15 +20,9 @@ class User extends CrudAlias
     {
         $this->role = $role;
     }
-    public function getCin(): string
-    {
-        return $this->cin;
-    }
 
-    public function setCin(string $cin): void
-    {
-        $this->cin = $cin;
-    }
+
+
 
     public function getPassword(): string
     {
@@ -44,18 +38,16 @@ class User extends CrudAlias
      * @param string $name
      * @param string $email
      * @param string $password
-     * @param string $cin
      * @param int $id
      * @param string $role
      */
-    public function __construct(string $name="", string $email="", string $password="", string $cin="", int $id=0, string $role="authors")
+    public function __construct(string $name="", string $email="", string $password="", int $id=0, string $role="authors")
     {
         parent::__construct();
         $this->id = $id;
         $this->name = $name;
         $this->email = $email;
         $this->password = $password;
-        $this->cin=$cin;
         $this->role=$role;
     }
 
@@ -91,7 +83,7 @@ class User extends CrudAlias
 
 
     public function edit():void{
-        $this->update('users', $this->id, ['name' => $this->name,'cin'=>$this->cin,'email'=>$this->email]);
+        $this->update('users', $this->id, ['name' => $this->name,'email'=>$this->email]);
     }
 
     public function destroy():void{
@@ -100,11 +92,15 @@ class User extends CrudAlias
 
     public function add(): void
     {
-        $this->id = $this->insert('users', ['name' => $this->name, 'email' => $this->email]);
+        $this->id = $this->insert('users', ['name' => $this->name, 'email' => $this->email,'password'=>$this->password]);
     }
 
     public function show(): object
     {
         return $this->select('users', $this->id);
+    }
+    public function check_auth_register(): ?object
+    {
+        return $this->select_auth($this->email);
     }
 }
