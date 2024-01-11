@@ -1,43 +1,44 @@
 <?php
 
 namespace MVC\Model;
-use MVC\Model\Tags;
-use MVC\Model\Wiki;
+use MVC\Model\Crud;
 
-class wiki_tags
+class wiki_tags extends Crud
 {
-    private Wiki $wiki;
-    private Tags $tag;
+    private int $id_wiki;
+    private int $id_tag;
 
-    /**
-     * @param \MVC\Model\Wiki $wiki
-     * @param \MVC\Model\Tags $tag
-     */
-    public function __construct(Wiki $wiki, Tags $tag)
+    public function getIdWiki(): int
+    {
+        return $this->id_wiki;
+    }
+
+    public function setIdWiki(int $id_wiki): void
+    {
+        $this->id_wiki = $id_wiki;
+    }
+
+    public function getIdTag(): int
+    {
+        return $this->id_tag;
+    }
+
+    public function setIdTag(int $id_tag): void
+    {
+        $this->id_tag = $id_tag;
+    }
+
+
+    public function __construct(int $id_wiki, int $id_tag)
     {
         parent::__construct();
-        $this->wiki = $wiki;
-        $this->tag = $tag;
+        $this->id_wiki = $id_wiki;
+        $this->id_tag = $id_tag;
+    }
+    public function add(): void
+    {
+        $this->insert('wiki_tags', ['id_wiki' => $this->id_wiki, 'id_tag' => $this->id_tag]);
     }
 
-    public function getWiki(): Wiki
-    {
-        return $this->wiki;
-    }
-
-    public function setWiki(Wiki $wiki): void
-    {
-        $this->wiki = $wiki;
-    }
-
-    public function getTag(): Tags
-    {
-        return $this->tag;
-    }
-
-    public function setTag(Tags $tag): void
-    {
-        $this->tag = $tag;
-    }
 
 }

@@ -97,7 +97,9 @@ class User extends CrudAlias
 
     public function show(): object
     {
-        return $this->select('users', $this->id);
+        $us= $this->select('users', $this->id);
+        $this->name=$us->name;
+        $this->email=$us->email;
     }
     public function check_auth_register(): ?object
     {

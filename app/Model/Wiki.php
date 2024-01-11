@@ -10,17 +10,27 @@ class Wiki extends Crud
     private string $title;
     private string $description;
     private User $user;
-    private string $category;
+    private int $id_category;
+
+    public function getIdCategory(): int
+    {
+        return $this->id_category;
+    }
+
+    public function setIdCategory(int $id_category): void
+    {
+        $this->id_category = $id_category;
+    }
     private string $image;
 
-    public function __construct(User $user,string $title="", string $description="", string $category="", string $image="",int $id=0)
+    public function __construct(User $user,string $title="", string $description="", int $id_category=0, string $image="",int $id=0)
     {
         parent::__construct();
         $this->id = $id;
         $this->title = $title;
         $this->description = $description;
         $this->user = $user;
-        $this->category = $category;
+        $this->id_category = $id_category;
         $this->image = $image;
     }
 
@@ -64,15 +74,6 @@ class Wiki extends Crud
         $this->user = $user;
     }
 
-    public function getCategory(): string
-    {
-        return $this->category;
-    }
-
-    public function setCategory(string $category): void
-    {
-        $this->category = $category;
-    }
 
     public function getImage(): string
     {
@@ -97,6 +98,16 @@ class Wiki extends Crud
     }
     public function count_posts_pending():int{
         return $this->posts_pending_count();
+    }
+    public function getWikis_user():array{
+        return $this->user_getWikis($this->user->getId());
+    }
+    public function destroy():void{
+        $this->delete('wikis', $this->id);
+    }
+    public function add(): void
+    {
+        $this->id = $this->insert('wikis', ['title' => $this->title, 'description' => $this->description,'image'=>$this->image,'id_user'=>$this->user->getId(),'id_catg'=>$this->id_category]);
     }
 
 

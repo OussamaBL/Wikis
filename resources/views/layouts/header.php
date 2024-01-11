@@ -1,20 +1,20 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-light" style="background-color: #472424">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="#">
+        <a class="navbar-brand" style="color: white" href="#">
             <img src="<?= URL_DIR ?>public/images/wikis.png" style="width: 50px">
             Wikis</a>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 <li class="nav-item me-3">
-                    <a class="nav-link active" href="/wikis/home/index">Home</a>
+                    <a class="nav-link active" href="/wikis/home/index" style="color: white">Home</a>
                 </li>
 
                 <?php if(isset($_SESSION['id_user'])){ ?>
                     <li class="nav-item me-3">
-                        <a class="nav-link active" href="/wikis/home/index">My Posts</a>
+                        <a class="nav-link active" style="color: white" href="/wikis/Wiki/my_posts">My Posts</a>
                     </li>
 
                 <?php } else{ ?>

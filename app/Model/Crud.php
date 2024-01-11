@@ -119,5 +119,13 @@ abstract class Crud implements CrudInterface
         //return $stmt->fetch(PDO::FETCH_OBJ);
         return $stmt->fetch(PDO::FETCH_OBJ)->categories_count;
     }
+    public function user_getWikis(int $id_user):array{
+        $sql = "SELECT w.*,c.name as 'category',group_concat(t.name) as 'wiki_tags' FROM Wikis w inner join categories c on w.id_catg=c.id inner join wiki_tags wt on wt.id_wiki=w.id inner join tags t on wt.id_tag=t.id  where (status='pending' or status='validate') and w.id_user=?";
+        $stmt = connexion::$pdo->prepare($sql);
+        $stmt->execute([$id_user]);
+
+        //return $stmt->fetch(PDO::FETCH_OBJ);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
 
 }

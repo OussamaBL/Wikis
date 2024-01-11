@@ -33,7 +33,7 @@ class AuthController extends Controller
                     $user->add();
                     $_SESSION['id_user']=$user->getId();
                     $_SESSION["name"]=$user->getName();
-                    header("Location: /Wikis/Auth/profile");
+                    header("Location: /Wikis/Wiki/my_posts");
                 }
                 else $this->render("views","sign_up","Register","email_exist");
             }
@@ -53,7 +53,7 @@ class AuthController extends Controller
                     $_SESSION["id_user"]=$us->id;
                     $_SESSION["name"]=$us->name;
                     if($us->role=="admin") header("Location: /Wikis/Wiki/index");
-                    else header("Location: /Wikis/Auth/profile");
+                    else header("Location: /Wikis/Wiki/my_posts");
                     die;
                 }
                 else{
