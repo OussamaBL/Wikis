@@ -103,4 +103,8 @@ class User extends CrudAlias
     {
         return $this->select_auth($this->email);
     }
+    public function count_users():int{
+        return $this->users_count();
+    }
+
 }

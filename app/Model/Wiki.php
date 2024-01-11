@@ -2,7 +2,9 @@
 
 namespace MVC\Model;
 use MVC\Model\User;
-class Wiki
+use MVC\Model\Crud;
+
+class Wiki extends Crud
 {
     private int $id;
     private string $title;
@@ -11,16 +13,9 @@ class Wiki
     private string $category;
     private string $image;
 
-    /**
-     * @param string $title
-     * @param string $description
-     * @param User|null $user
-     * @param string $category
-     * @param string $image
-     * @param int $id
-     */
-    public function __construct(string $title="", string $description="", User $user=null, string $category="", string $image="",int $id=0)
+    public function __construct(User $user,string $title="", string $description="", string $category="", string $image="",int $id=0)
     {
+        parent::__construct();
         $this->id = $id;
         $this->title = $title;
         $this->description = $description;
@@ -88,5 +83,21 @@ class Wiki
     {
         $this->image = $image;
     }
+    public function getAll_pending():array{
+        return $this->getPending_wikis();
+    }
+    public function reject():void{
+        $this->update('wikis', $this->id, ['status' => "reject"]);
+    }
+    public function validate():void{
+        $this->update('wikis', $this->id, ['status' => "validate"]);
+    }
+    public function count_posts():int{
+        return $this->posts_count();
+    }
+    public function count_posts_pending():int{
+        return $this->posts_pending_count();
+    }
+
 
 }

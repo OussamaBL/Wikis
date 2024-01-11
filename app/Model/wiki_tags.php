@@ -15,6 +15,7 @@ class wiki_tags
      */
     public function __construct(Wiki $wiki, Tags $tag)
     {
+        parent::__construct();
         $this->wiki = $wiki;
         $this->tag = $tag;
     }

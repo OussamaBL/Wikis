@@ -51,8 +51,9 @@ class AuthController extends Controller
             if($us!=null){
                 if(password_verify($password, $us->password)){
                     $_SESSION["id_user"]=$us->id;
-                    $_SESSION["name"]=$us->full_name;
-                    header("Location: /Wikis/Auth/profile");
+                    $_SESSION["name"]=$us->name;
+                    if($us->role=="admin") header("Location: /Wikis/Wiki/index");
+                    else header("Location: /Wikis/Auth/profile");
                     die;
                 }
                 else{
@@ -78,6 +79,15 @@ class AuthController extends Controller
 
     function update(int $id): void
     {
+        $this->render("views",'categories',"categories");
         // TODO: Implement update() method.
     }
+    public function logout():void{
+        if(isset($_SESSION["id_user"])){
+            unset($_SESSION["id_user"]);
+            unset($_SESSION["name"]);
+        }
+        header("Location: /wikis/auth/sign_in");
+    }
+
 }

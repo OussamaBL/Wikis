@@ -67,4 +67,57 @@ abstract class Crud implements CrudInterface
         $stmt->execute([$email]);
         return $stmt->rowCount() > 0 ? $stmt->fetch(PDO::FETCH_OBJ) : null;
     }
+    public function check_category(string $name):?object{
+        $sql = "select * from categories where name = ?";
+        $stmt = connexion::$pdo->prepare($sql);
+        $stmt->execute([$name]);
+        return $stmt->rowCount() > 0 ? $stmt->fetch(PDO::FETCH_OBJ) : null;
+    }
+    public function check_tag(string $name):?object{
+        $sql = "select * from tags where name = ?";
+        $stmt = connexion::$pdo->prepare($sql);
+        $stmt->execute([$name]);
+        return $stmt->rowCount() > 0 ? $stmt->fetch(PDO::FETCH_OBJ) : null;
+    }
+    public function getPending_wikis():array{
+        $sql = "SELECT w.id,w.title,w.description,w.date_creation,u.name,u.email,c.name as 'category' FROM Wikis w inner join users u on w.id_user=u.id inner join categories c on w.id_catg=c.id  where status='pending'";
+        $stmt = connexion::$pdo->prepare($sql);
+        $stmt->execute();
+
+        //return $stmt->fetch(PDO::FETCH_OBJ);
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
+    public function users_count():int{
+        $sql = "SELECT count(*) as 'count_users' FROM users where role='autors' ";
+        $stmt = connexion::$pdo->prepare($sql);
+        $stmt->execute();
+
+        //return $stmt->fetch(PDO::FETCH_OBJ);
+        return $stmt->fetch(PDO::FETCH_OBJ)->count_users;
+    }
+    public function posts_count():int{
+        $sql = "SELECT count(*) as 'posts_count' FROM wikis where status='validate' ";
+        $stmt = connexion::$pdo->prepare($sql);
+        $stmt->execute();
+
+        //return $stmt->fetch(PDO::FETCH_OBJ);
+        return $stmt->fetch(PDO::FETCH_OBJ)->posts_count;
+    }
+    public function posts_pending_count():int{
+        $sql = "SELECT count(*) as 'posts_pending_count' FROM wikis where status='pending' ";
+        $stmt = connexion::$pdo->prepare($sql);
+        $stmt->execute();
+
+        //return $stmt->fetch(PDO::FETCH_OBJ);
+        return $stmt->fetch(PDO::FETCH_OBJ)->posts_pending_count;
+    }
+    public function categories_count():int{
+        $sql = "SELECT count(*) as 'categories_count' FROM categories ";
+        $stmt = connexion::$pdo->prepare($sql);
+        $stmt->execute();
+
+        //return $stmt->fetch(PDO::FETCH_OBJ);
+        return $stmt->fetch(PDO::FETCH_OBJ)->categories_count;
+    }
+
 }

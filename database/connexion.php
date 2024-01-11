@@ -10,8 +10,8 @@ class connexion
     public static PDO|null $pdo = null;
     private string $ServerName="localhost";
     private string $Name="wikis";
-    private string $UserName="OussamaBL";
-    private string $password="OussamaBL555@?";
+    private string $UserName="root";
+    private string $password="";
 
     public function __construct()
     {
