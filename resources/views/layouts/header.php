@@ -16,6 +16,12 @@
                     <li class="nav-item me-3">
                         <a class="nav-link active" style="color: white" href="/wikis/Wiki/my_posts">My Posts</a>
                     </li>
+                    <li class="nav-item me-3">
+                        <a class="nav-link active" style="color: white" href="/wikis/Wiki/searsh">Searsh</a>
+                    </li>
+                    <li class="nav-item me-3">
+                        <a class="nav-link active" style="color: white" href="/wikis/Auth/logout">Logout</a>
+                    </li>
 
                 <?php } else{ ?>
                     <li class="nav-item me-3">

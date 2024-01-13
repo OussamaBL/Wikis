@@ -37,20 +37,26 @@
             <tbody>
             <?php foreach ($wikis as $wiki){ ?>
                 <tr>
-                    <th><?= $wiki->title; ?></th>
-                    <th><?= substr($wiki->description, 0, 50); ?></th>
-                    <th><?= $wiki->category; ?></th>
-                    <th><?= $wiki->wiki_tags; ?></th>
-                    <th><?= $wiki->date_creation; ?></th>
-                    <th><?= $wiki->status; ?></th>
-                    <th>
+                    <td>
+                       <a href="/wikis/wiki/post/<?= $wiki->id ?>"><?= $wiki->title; ?></a>
+                    </td>
+                    <td><?= substr($wiki->description, 0, 50); ?></td>
+                    <td><?= $wiki->category; ?></td>
+                    <td><?= $wiki->wiki_tags; ?></td>
+                    <td><?= $wiki->date_creation; ?></td>
+                    <td>
+                        <?php if($wiki->status=='pending') $color='orange';
+                        else $color='green'; ?>
+                        <span style="padding: 5px;border-radius: 15px;color: white;background-color: <?= $color ?>"><?= $wiki->status ?></span>
+                    </td>
+                    <td>
                         <a href="/wikis/Wiki/edit/<?= $wiki->id ?>">
                             <i class="fa fa-edit"></i>
                         </a>
                         <a href="/wikis/Wiki/destroy/<?= $wiki->id ?>" onclick="return confirm('Are you sure you want to delete this post ?');">
                             <i class="fa fa-trash"></i>
                         </a>
-                    </th>
+                    </td>
                 </tr>
             <?php } ?>
             </tbody>

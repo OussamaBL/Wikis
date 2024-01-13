@@ -92,9 +92,70 @@ class WikiController extends Controller
         $wiki->destroy();
         header('Location: /wikis/Wiki/my_posts');
     }
+    public function edit(int $id):void{
+        $wiki=new Wiki(new User());
+        $wiki->setId($id);
+        $info_wiki=$wiki->getInfos_wiki();
+        $category=new Category();
+        $categories=$category->getAll();
+        $tag=new Tags();
+        $tags=$tag->getAll();
+        $data=array($info_wiki,$categories,$tags);
+        $this->render('views','update_wiki','Edit Wikis',$data);
+    }
 
     function update(int $id): void
     {
+
         // TODO: Implement update() method.
+    }
+    public function post(int $id):void{
+        $wiki=new Wiki(new User());
+        $wiki->setId($id);
+        $info_wiki=$wiki->getInfos_wiki();
+        $this->render('views','post','Post',$info_wiki);
+    }
+    public function searsh():void{
+        $wiki=new Wiki(new User());
+        $wikis=$wiki->getValidate_wikis();
+        $this->render('views','searsh','Wikis',$wikis);
+    }
+    public function getSearsh():void{
+        $searsh=$_POST['searchInput'];
+        $wiki=new Wiki(new User());
+        $wikis=$wiki->getValidate_wikis($searsh);
+        ?>
+        <h2 class="text-center mb-4">wikis</h2>
+        <?php
+        if(count($wikis)>0){
+        foreach ($wikis as $wiki){ ?>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-banner">
+                        <p class="category-tag popular"><?= $wiki->category ?></p>
+                        <img class="banner-img" src='<?= URL_DIR ?>public/images/<?= $wiki->image ?>' alt=''>
+                    </div>
+                    <div class="card-body">
+                        <?php $tags=explode(',',$wiki->wiki_tags);  ?>
+                        <p class="blog-hashtag">
+                            <?php for ($i = 0; $i < count($tags); $i++) {
+                                echo "#".$tags[$i]." ";
+                            } ?>
+                        </p>
+                        <h3 class="blog-title"><a href="/wikis/Wiki/post/<?= $wiki->id ?>"><?= $wiki->title ?></a> </h3>
+                        <p class="blog-description mt-3"><?= substr($wiki->description, 0, 50); ?></p>
+                        <p>Autors : <strong><?= $wiki->name ?></strong></p>
+                        <p><?= $wiki->email ?></p>
+
+                    </div>
+                </div>
+            </div>
+        <?php }}
+        else{ ?>
+                <div class="text-center mt-4">
+                    <h4>Not found</h4>
+                </div>
+
+        <?php }
     }
 }

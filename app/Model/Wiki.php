@@ -109,6 +109,17 @@ class Wiki extends Crud
     {
         $this->id = $this->insert('wikis', ['title' => $this->title, 'description' => $this->description,'image'=>$this->image,'id_user'=>$this->user->getId(),'id_catg'=>$this->id_category]);
     }
+    public function getInfos_wiki():object{
+        return $this->info_wiki($this->id);
+    }
+    public function get_latest_wikis():array{
+        return $this->wikis_latest();
+    }
+    public function getValidate_wikis(string $searsh=""):array{
+        return $this->getWikis_validate($searsh);
+    }
+
+
 
 
 }

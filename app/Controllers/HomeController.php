@@ -10,7 +10,12 @@ class HomeController extends Controller
 {
     public function index(): void
     {
-        echo "hello";
+        $wiki=new Wiki(new User());
+        $wikis=$wiki->get_latest_wikis();
+        $category=new Category();
+        $categories=$category->getAll();
+        $data=array($wikis,$categories);
+        $this->render('views','index','Home',$data);
     }
     public function dashboard():void{
         $user=new User();
