@@ -48,7 +48,6 @@ abstract class Crud implements CrudInterface
         $sql = "UPDATE $table SET $setClause WHERE id = ?";
         $stmt = connexion::$pdo->prepare($sql);
         $stmt->execute(array_merge(array_values($data), [$id]));
-
         return $stmt->rowCount();
     }
 
@@ -120,7 +119,7 @@ abstract class Crud implements CrudInterface
         return $stmt->fetch(PDO::FETCH_OBJ)->categories_count;
     }
     public function user_getWikis(int $id_user):array{
-        $sql = "SELECT w.*,c.name as 'category',group_concat(t.name) as 'wiki_tags' FROM Wikis w inner join categories c on w.id_catg=c.id inner join wiki_tags wt on wt.id_wiki=w.id inner join tags t on wt.id_tag=t.id  where (w.status='pending' or w.status='validate') and w.id_user=? group by w.id;";
+        $sql = "SELECT w.*,c.name as 'category',group_concat(t.name) as 'wiki_tags' FROM Wikis w inner join categories c on w.id_catg=c.id left join wiki_tags wt on wt.id_wiki=w.id left join tags t on wt.id_tag=t.id  where (w.status='pending' or w.status='validate') and w.id_user=? group by w.id;";
         $stmt = connexion::$pdo->prepare($sql);
         $stmt->execute([$id_user]);
 
@@ -128,25 +127,37 @@ abstract class Crud implements CrudInterface
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
     public function info_wiki(int $id):object{
-        $sql = "SELECT w.*,u.name,u.email,c.name as 'category', group_concat(t.name) as 'wiki_tags' FROM wikis w inner join users u on w.id_user=u.id inner join categories c on w.id_catg=c.id inner join wiki_tags wt on w.id=wt.id_wiki inner join tags t on wt.id_tag=t.id where w.id=?";
+        $sql = "SELECT w.*,u.name,u.email,c.name as 'category', group_concat(t.name) as 'wiki_tags' FROM wikis w inner join users u on w.id_user=u.id inner join categories c on w.id_catg=c.id left join wiki_tags wt on w.id=wt.id_wiki left join tags t on wt.id_tag=t.id where w.id=?";
         $stmt = connexion::$pdo->prepare($sql);
         $stmt->execute([$id]);
 
         return $stmt->fetch(PDO::FETCH_OBJ);
     }
     public function wikis_latest():array{
-        $sql = "SELECT w.*,u.name,u.email,c.name as 'category',group_concat(t.name) as 'wiki_tags' FROM Wikis w inner join users u on w.id_user=u.id inner join categories c on w.id_catg=c.id inner join wiki_tags wt on wt.id_wiki=w.id inner join tags t on wt.id_tag=t.id where w.status='validate' group by w.id order by w.id desc limit 6";
+        $sql = "SELECT w.*,u.name,u.email,c.name as 'category',group_concat(t.name) as 'wiki_tags' FROM Wikis w inner join users u on w.id_user=u.id inner join categories c on w.id_catg=c.id left join wiki_tags wt on wt.id_wiki=w.id left join tags t on wt.id_tag=t.id where w.status='validate' group by w.id order by w.id desc limit 6";
         $stmt = connexion::$pdo->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
     public function getWikis_validate(string $searsh=""):array{
-        $sql = "SELECT w.*,u.name,u.email,c.name as 'category',group_concat(t.name) as 'wiki_tags' FROM Wikis w inner join users u on w.id_user=u.id inner join categories c on w.id_catg=c.id inner join wiki_tags wt on wt.id_wiki=w.id inner join tags t on wt.id_tag=t.id where w.status='validate' and (w.title like '%$searsh%' or c.name like '%$searsh%' or t.name like '%$searsh%') group by w.id order by w.id desc ;";
+        $sql = "SELECT w.*,u.name,u.email,c.name as 'category',group_concat(t.name) as 'wiki_tags' FROM Wikis w inner join users u on w.id_user=u.id inner join categories c on w.id_catg=c.id left join wiki_tags wt on wt.id_wiki=w.id left join tags t on wt.id_tag=t.id where w.status='validate' and (w.title like '%$searsh%' or c.name like '%$searsh%' or t.name like '%$searsh%') group by w.id order by w.id desc ;";
         $stmt = connexion::$pdo->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_OBJ);
     }
+    public function delete_wiki_tags(int $id):int
+    {
+        $sql = "DELETE FROM wiki_tags WHERE id_wiki = ?";
+        $stmt = connexion::$pdo->prepare($sql);
+        $stmt->execute([$id]);
 
-
+        return $stmt->rowCount();
+    }
+    public function wikis_archive():array{
+        $sql = "SELECT w.*,u.name,u.email,c.name as 'category',group_concat(t.name) as 'wiki_tags' FROM Wikis w inner join users u on w.id_user=u.id inner join categories c on w.id_catg=c.id left join wiki_tags wt on wt.id_wiki=w.id left join tags t on wt.id_tag=t.id where w.status='archive' group by w.id order by w.id desc ";
+        $stmt = connexion::$pdo->prepare($sql);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_OBJ);
+    }
 
 }

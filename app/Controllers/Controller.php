@@ -22,5 +22,11 @@ abstract class Controller
         $data = htmlspecialchars($data);
         return $data;
     }
+    public function check_auth():void{
+        if(!isset($_SESSION['id_user'])){
+            header('Location: /wikis/auth/sign_in');
+            exit();
+        }
+    }
 
 }

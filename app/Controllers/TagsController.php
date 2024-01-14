@@ -11,6 +11,7 @@ class TagsController extends Controller
 
     function index(): void
     {
+        $this->check_auth();
         $tag=new Tags();
         $tags=$tag->getAll();
         $this->render("views",'tags','tags',$tags);
@@ -34,6 +35,7 @@ class TagsController extends Controller
 
     function destroy(int $id): void
     {
+        $this->check_auth();
         $tag=new Tags();
         $tag->setId($id);
         $tag->remove();
@@ -56,12 +58,14 @@ class TagsController extends Controller
         // TODO: Implement update() method.
     }
     public function edit(int $id,$msg=null):void{
+        $this->check_auth();
         $tag=new Tags();
         $tag->setId($id);
         $tag->getInfos();
         $this->render("views","update_tags","tags",$tag,$msg);
     }
     public function add($msg=null):void{
+        $this->check_auth();
         $this->render("views","add_tags",'tags',$msg);
     }
 }

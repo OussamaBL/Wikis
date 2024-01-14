@@ -118,6 +118,15 @@ class Wiki extends Crud
     public function getValidate_wikis(string $searsh=""):array{
         return $this->getWikis_validate($searsh);
     }
+    public function edit():void{
+        $this->update('wikis', $this->id, ['title' => $this->title,'description'=>$this->description,'image'=>$this->image,'id_user'=>$this->user->getId(),'id_catg'=>$this->id_category]);
+    }
+    public function getAll_archive():array{
+        return $this->wikis_archive();
+    }
+    public function archive():void{
+        $this->update('wikis', $this->id, ['status' => 'archive']);
+    }
 
 
 

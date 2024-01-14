@@ -33,6 +33,10 @@
                     <a href="/wikis/Wiki/index">
                         <i class="fas fa-calendar-alt"></i>Wikis</a>
                 </li>
+                <li>
+                    <a href="/wikis/Wiki/archive">
+                        <i class="fas fa-calendar-alt"></i>Archive</a>
+                </li>
 
 
             </ul>
@@ -68,6 +72,10 @@
                 <li>
                     <a href="/wikis/Wiki/index">
                         <i class="fas fa-calendar-alt"></i>Wikis</a>
+                </li>
+                <li>
+                    <a href="/wikis/Wiki/archive">
+                        <i class="fas fa-calendar-alt"></i>Archive</a>
                 </li>
 
 

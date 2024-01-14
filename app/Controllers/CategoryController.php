@@ -10,12 +10,14 @@ class CategoryController extends Controller
 
     function index(): void
     {
+        $this->check_auth();
         $category=new Category();
         $categories=$category->getAll();
         $this->render("views",'categories','categories',$categories);
         // TODO: Implement index() method.
     }
     public function add($msg=null):void{
+        $this->check_auth();
         $this->render("views","add_category",'category',$msg);
     }
     function create(): void
@@ -35,6 +37,7 @@ class CategoryController extends Controller
 
     function destroy(int $id): void
     {
+        $this->check_auth();
         $category=new Category();
         $category->setId($id);
         $category->remove();
@@ -60,6 +63,7 @@ class CategoryController extends Controller
     }
 
     public function edit(int $id,$msg=null):void{
+        $this->check_auth();
         $category=new Category();
         $category->setId($id);
         $category->getInfos();

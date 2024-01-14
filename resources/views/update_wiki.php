@@ -34,7 +34,7 @@
                 </div>
                 <div class="form-group mb-3">
                     <label for="id_catg">Category</label>
-                    <select class="form-control" name="id_catg">
+                    <select class="form-control" name="id_catg" value="<?= $wiki->id_catg ?>">
                         <?php foreach ($categories as $category){ ?>
                             <option  value="<?= $category->id ?>" <?php if($category->name==$wiki->category) echo 'selected' ?> ><?= $category->name ?></option>
                         <?php } ?>
@@ -43,17 +43,21 @@
                 <div class="form-group mb-3">
                     <label for="tags">Tags</label>
                     <select class="js-example-basic-multiple form-control" multiple="multiple" name="tags[]" >
-                        <?php foreach ($tags as $tag){ ?>
-                            <option value="<?= $tag->id ?>"><?= $tag->name ?></option>
+                        <?php
+                        $tags_of_wiki=explode(',',$wiki->wiki_tags);
+                        foreach ($tags as $tag){
+                            $selected = in_array($tag->name, $tags_of_wiki) ? 'selected' : ''; ?>
+                            <option value="<?= $tag->id ?>" <?= $selected ?> > <?= $tag->name ?> </option>
                         <?php } ?>
                     </select>
                 </div>
                 <div class="form-group mb-3">
                     <label for="image">Image </label>
                     <input type="file" class="form-control-file" id="image" name="image">
+                    <input type="hidden" name="image_wiki" value="<?= $wiki->image ?>">
                 </div>
                 <div class="form-group mb-3">
-                    <input type="submit" class="btn btn-primary" value="Add">
+                    <input type="submit" class="btn btn-primary" value="Update" >
                 </div>
             </form>
         </div>

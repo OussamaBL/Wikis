@@ -10,6 +10,7 @@ class HomeController extends Controller
 {
     public function index(): void
     {
+
         $wiki=new Wiki(new User());
         $wikis=$wiki->get_latest_wikis();
         $category=new Category();
@@ -18,6 +19,7 @@ class HomeController extends Controller
         $this->render('views','index','Home',$data);
     }
     public function dashboard():void{
+        $this->check_auth();
         $user=new User();
         $count_users=$user->count_users();
         $wiki=new Wiki(new User());

@@ -41,8 +41,8 @@
                                 <th>Title</th>
                                 <th>Description</th>
                                 <th>Category</th>
+                                <th>Tags</th>
                                 <th>Date Creation</th>
-                                <th></th>
 
                             </tr>
                             </thead>
@@ -54,15 +54,8 @@
                                     <th><?= $wiki->title; ?></th>
                                     <th><?= substr($wiki->description, 0, 50); ?></th>
                                     <th><?= $wiki->category; ?></th>
+                                    <th><?= $wiki->wiki_tags; ?></th>
                                     <th><?= $wiki->date_creation; ?></th>
-                                    <th>
-                                        <a class="btn btn-danger" href="/wikis/Wiki/wiki_archive/<?= $wiki->id ?>" onclick="return confirm('Are you sure you want to archive ?');">
-                                           Archive
-                                        </a>
-                                        <a class="btn btn-success" href="/wikis/Wiki/validate/<?= $wiki->id ?>" onclick="return confirm('Are you sure you want to validate ?');">
-                                            Validate
-                                        </a>
-                                    </th>
                                 </tr>
                             <?php } ?>
                             </tbody>

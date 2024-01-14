@@ -29,7 +29,7 @@ class wiki_tags extends Crud
     }
 
 
-    public function __construct(int $id_wiki, int $id_tag)
+    public function __construct(int $id_wiki=0, int $id_tag=0)
     {
         parent::__construct();
         $this->id_wiki = $id_wiki;
@@ -38,6 +38,9 @@ class wiki_tags extends Crud
     public function add(): void
     {
         $this->insert('wiki_tags', ['id_wiki' => $this->id_wiki, 'id_tag' => $this->id_tag]);
+    }
+    public function destroy_tags():void{
+        $this->delete_wiki_tags($this->id_wiki);
     }
 
 
