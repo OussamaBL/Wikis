@@ -22,19 +22,20 @@
     <div class="container mt-4">
         <div class="row">
 
-            <form action="/wikis/wiki/create" method="post" enctype="multipart/form-data">
+            <form action="/wikis/wiki/create" id="form_post" method="post" enctype="multipart/form-data">
                 <div class="form-group mb-3">
                     <label for="title">Title</label>
                     <input type="text" class="form-control" name="title" id="title" placeholder="Title of post">
+                    <p id="error_title" style="color: red;display: none">Title is empty</p>
                 </div>
                 <div class="form-group mb-3">
                     <label for="description">Description</label>
                     <textarea class="form-control" name="description" id="description" rows="3"></textarea>
+                    <p id="error_description" style="color: red;display: none">Description is empty</p>
                 </div>
                 <div class="form-group mb-3">
                     <label for="id_catg">Category</label>
                     <select class="form-control" name="id_catg">
-                        <option>Default select</option>
                         <?php foreach ($categories as $category){ ?>
                             <option value="<?= $category->id ?>"><?= $category->name ?></option>
                         <?php } ?>
@@ -51,6 +52,7 @@
                 <div class="form-group mb-3">
                     <label for="image">Image </label>
                     <input type="file" class="form-control-file" id="image" name="image">
+                    <p id="error_image" style="color: red;display: none">Extension is incorrect</p>
                 </div>
                 <div class="form-group mb-3">
                     <input type="submit" class="btn btn-primary" value="Add">
@@ -71,6 +73,38 @@
     $(document).ready(function() {
         $('.js-example-basic-multiple').select2();
     });
+</script>
+<script>
+    document.getElementById("form_post").addEventListener('submit',(event)=>{
+        var title=document.getElementById("title").value;
+        var description=document.getElementById("description").value;
+        var image=document.getElementById("image").value;
+        Empty_form();
+        if(title===""){
+            document.getElementById("error_title").style.display="block";
+            event.preventDefault();
+        }
+        if(description===""){
+            document.getElementById("error_description").style.display="block";
+            event.preventDefault();
+        }
+        if(!validateImage(image)){
+            document.getElementById("error_image").style.display="block";
+            event.preventDefault();
+        }
+    })
+    function Empty_form(){
+        document.getElementById("error_title").style.display="none";
+        document.getElementById("error_description").style.display="none";
+    }
+    function validateImage(image) {
+        var allowedExtensions = /(\.jpg|\.jpeg|\.png|\.gif)$/i;
+        if (!allowedExtensions.exec(image)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 </script>
 </body>
 </html>

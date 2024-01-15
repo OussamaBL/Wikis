@@ -36,12 +36,14 @@
             </div>
             <div class="row clearfix">
                 <div class="">
-                    <form action="/Wikis/Auth/login" method="POST">
+                    <form action="/Wikis/Auth/login" id="form_login" method="POST">
                         <div class="input_field"> <span><i aria-hidden="true" class="fa fa-envelope"></i></span>
-                            <input type="email" name="email" placeholder="Email" required />
+                            <input type="email" id="email" name="email" placeholder="Email" required />
+                            <p id="error_email" style="color: red;display: none">Email format is incorrect</p>
                         </div>
                         <div class="input_field"> <span><i aria-hidden="true" class="fa fa-lock"></i></span>
-                            <input type="password" name="password" placeholder="Password" required />
+                            <input type="password" id="password" name="password" placeholder="Password" required />
+                            <p id="error_password" style="color: red;display: none">Password format is incorrect</p>
                         </div>
                         <input class="button" type="submit" value="Login" />
                     </form>
@@ -55,7 +57,9 @@
 <?php include "layouts/footer.php"; ?>
 
 <script src="<?= URL_DIR ?>public/js/bootstrap.bundle.min.js"></script>
+<script src="<?= URL_DIR ?>public/js/Validation_Login.js"></script>
 <script src="https://kit.fontawesome.com/ad5ea8d639.js" crossorigin="anonymous"></script>
+
 <script>
     <?php if($result!=null){ ?>
     var modal = document.getElementById("myModal");
@@ -69,6 +73,8 @@
         }
     }
     <?php } ?>
+
 </script>
+
 </body>
 </html>

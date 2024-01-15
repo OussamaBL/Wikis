@@ -15,7 +15,7 @@
 
 </head>
 
-<body class="animsition">
+<body class="">
 <div class="page-wrapper">
 
     <?php /** @var TYPE_NAME $msg */

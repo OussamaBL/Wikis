@@ -16,7 +16,7 @@
 
 </head>
 
-<body class="animsition">
+<body class="">
 <div class="page-wrapper">
 
     <?php $categories=$result; ?>

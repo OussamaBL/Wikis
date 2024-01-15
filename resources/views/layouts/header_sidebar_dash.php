@@ -18,7 +18,7 @@
         <div class="container-fluid">
             <ul class="navbar-mobile__list list-unstyled">
                 <li>
-                    <a href="map.html">
+                    <a href="/wikis/Home/dashboard">
                         <i class="fas fa-map-marker-alt"></i>Dashboard</a>
                 </li>
                 <li>
@@ -53,7 +53,7 @@
             <span style="color: black;font-weight: bold;font-size: 20px">Wiki</span>
         </a>
     </div>
-    <div class="menu-sidebar__content js-scrollbar1" style="background-color: #c2c2c2">
+    <div class="menu-sidebar__content js-scrollbar1" style="background-color: #472424">
         <nav class="navbar-sidebar">
             <ul class="list-unstyled navbar__list">
 

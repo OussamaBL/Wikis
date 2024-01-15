@@ -54,37 +54,43 @@ class WikiController extends Controller
     }
     function create(): void
     {
-        $id_user=$_SESSION['id_user'];
-        $title=$this->validation_input($_POST['title']);
-        $description=$this->validation_input($_POST['description']);
-        $id_catg=$this->validation_input($_POST['id_catg']);
-        $tags=$_POST['tags'];
+        if($_SERVER["REQUEST_METHOD"] == "POST") {
+            $id_user = $_SESSION['id_user'];
+            $title = $this->validation_input($_POST['title']);
+            $description = $this->validation_input($_POST['description']);
+            $id_catg = $this->validation_input($_POST['id_catg']);
 
-        $target_dir = "../public/images/";
-        $target_file = $target_dir . basename($_FILES["image"]["name"]);
-        $uploadOk = 1;
-        $imageFileType = strtolower(pathinfo($target_file,PATHINFO_EXTENSION));
 
-       if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" )
-            $uploadOk = 0;
-        if ($uploadOk == 0) {
-            header("Location: /wikis/Wiki/add_post/error_uploading");
-        } else {
-            if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)){
-                $image=$_FILES["image"]["name"];
-                $user=new User();
-                $user->setId($id_user);
+            $target_dir = "../public/images/";
+            $target_file = $target_dir . basename($_FILES["image"]["name"]);
+            $uploadOk = 1;
+            $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
 
-                $wiki=new Wiki($user,$title,$description,$id_catg,$image);
-                $wiki->add();
-                for ($i = 0; $i < count($tags); $i++) {
-                    $wiki_tag=new wiki_tags($wiki->getId(),$tags[$i]);
-                    $wiki_tag->add();
-                }
-                header("Location: /wikis/Wiki/my_posts");
+            if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif")
+                $uploadOk = 0;
+            if ($uploadOk == 0) {
+                header("Location: /wikis/Wiki/add_post/error_uploading");
+            } else {
+                if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
+                    $image = $_FILES["image"]["name"];
+                    $user = new User();
+                    $user->setId($id_user);
+
+                    $wiki = new Wiki($user, $title, $description, $id_catg, $image);
+                    $wiki->add();
+                    if(isset($_POST['tags'])) {
+                        $tags = $_POST['tags'];
+                        if(count($tags)>0){
+                            for ($i = 0; $i < count($tags); $i++) {
+                                $wiki_tag = new wiki_tags($wiki->getId(), $tags[$i]);
+                                $wiki_tag->add();
+                            }
+                        }
+                    }
+                    header("Location: /wikis/Wiki/my_posts");
+                } else header("Location: /wikis/Wiki/add_post/error_uploading");
+
             }
-            else header("Location: /wikis/Wiki/add_post/error_uploading");
-
         }
         // TODO: Implement create() method.
     }
@@ -189,41 +195,43 @@ class WikiController extends Controller
         $this->render('views','searsh','Wikis',$wikis);
     }
     public function getSearsh():void{
-        $searsh=$_POST['searchInput'];
-        $wiki=new Wiki(new User());
-        $wikis=$wiki->getValidate_wikis($searsh);
-        ?>
-        <h2 class="text-center mb-4">wikis</h2>
-        <?php
-        if(count($wikis)>0){
-        foreach ($wikis as $wiki){ ?>
-            <div class="col-md-4">
-                <div class="card">
-                    <div class="card-banner">
-                        <p class="category-tag popular"><?= $wiki->category ?></p>
-                        <img class="banner-img" src='<?= URL_DIR ?>public/images/<?= $wiki->image ?>' alt=''>
-                    </div>
-                    <div class="card-body">
-                        <?php $tags=explode(',',$wiki->wiki_tags);  ?>
-                        <p class="blog-hashtag">
-                            <?php for ($i = 0; $i < count($tags); $i++) {
-                                echo "#".$tags[$i]." ";
-                            } ?>
-                        </p>
-                        <h3 class="blog-title"><a href="/wikis/Wiki/post/<?= $wiki->id ?>"><?= $wiki->title ?></a> </h3>
-                        <p class="blog-description mt-3"><?= substr($wiki->description, 0, 50); ?></p>
-                        <p>Autors : <strong><?= $wiki->name ?></strong></p>
-                        <p><?= $wiki->email ?></p>
+        if($_SERVER["REQUEST_METHOD"] == "POST") {
+            $searsh=$_POST['searchInput'];
+            $wiki=new Wiki(new User());
+            $wikis=$wiki->getValidate_wikis($searsh);
+            ?>
+            <h2 class="text-center mb-4">wikis</h2>
+            <?php
+            if(count($wikis)>0){
+            foreach ($wikis as $wiki){ ?>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-banner">
+                            <p class="category-tag popular"><?= $wiki->category ?></p>
+                            <img class="banner-img" src='<?= URL_DIR ?>public/images/<?= $wiki->image ?>' alt=''>
+                        </div>
+                        <div class="card-body">
+                            <?php $tags=explode(',',$wiki->wiki_tags);  ?>
+                            <p class="blog-hashtag">
+                                <?php for ($i = 0; $i < count($tags); $i++) {
+                                    echo "#".$tags[$i]." ";
+                                } ?>
+                            </p>
+                            <h3 class="blog-title"><a href="/wikis/Wiki/post/<?= $wiki->id ?>"><?= $wiki->title ?></a> </h3>
+                            <p class="blog-description mt-3"><?= substr($wiki->description, 0, 50); ?></p>
+                            <p>Autors : <strong><?= $wiki->name ?></strong></p>
+                            <p><?= $wiki->email ?></p>
 
+                        </div>
                     </div>
                 </div>
-            </div>
-        <?php }}
-        else{ ?>
-                <div class="text-center mt-4">
-                    <h4>Not found</h4>
-                </div>
+            <?php }}
+            else{ ?>
+                    <div class="text-center mt-4">
+                        <h4>Not found</h4>
+                    </div>
 
-        <?php }
+            <?php }
+        }
     }
 }

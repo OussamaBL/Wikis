@@ -16,59 +16,60 @@ class AuthController extends Controller
     public function sign_up():void{
         $this->render("views","sign_up","Register");
     }
-    public function sign_in():void{
-        $this->render("views","sign_in",'Login');
+    public function sign_in($msg=null):void{
+        $this->render("views","sign_in",'Login',$msg);
     }
     function create(): void
     {
         // TODO: Implement create() method.
-        $name = $this->validation_input($_POST["name"]);
-        $email = $this->validation_input($_POST["email"]);
-        $password = $this->validation_input($_POST["password"]);
-        $re_password = $this->validation_input($_POST["re_password"]);
-        if(!(empty($name) && empty($email) && empty($password) && empty($re_password) )){
-            if($password==$re_password){
-                $user=new User($name,$email,password_hash($password,PASSWORD_DEFAULT));
-                if($user->check_auth_register()==null) {
-                    $user->add();
-                    $_SESSION['id_user']=$user->getId();
-                    $_SESSION["name"]=$user->getName();
-                    header("Location: /Wikis/Wiki/my_posts");
-                }
-                else $this->render("views","sign_up","Register","email_exist");
-            }
-            else $this->render("views","sign_up","Register","confirmation_password_incorrect");
+        if($_SERVER["REQUEST_METHOD"] == "POST") {
+            $name = $this->validation_input($_POST["name"]);
+            $email = $this->validation_input($_POST["email"]);
+            $password = $this->validation_input($_POST["password"]);
+            $re_password = $this->validation_input($_POST["re_password"]);
+            if (!(empty($name) && empty($email) && empty($password) && empty($re_password))) {
+                if ($password == $re_password) {
+                    if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                        $user = new User($name, $email, password_hash($password, PASSWORD_DEFAULT));
+                        if ($user->check_auth_register() == null) {
+                            $user->add();
+                            $_SESSION['id_user'] = $user->getId();
+                            $_SESSION["name"] = $user->getName();
+                            header("Location: /Wikis/Wiki/my_posts");
+                        } else $this->render("views", "sign_up", "Register", "email_exist");
+                    } else $this->render("views", "sign_up", "Register", "Email_format_incorrect");
+
+                } else $this->render("views", "sign_up", "Register", "confirmation_password_incorrect");
+            } else $this->render("views", "sign_up", "Register", "enter_all_data");
         }
-        else $this->render("views","sign_up","Register","enter_all_data");
     }
     public function login():void{
-        $email = $this->validation_input($_POST["email"]);
-        $password = $this->validation_input($_POST["password"]);
-        if(!(empty($password) || empty($email))){
-            $user=new User();
-            $user->setEmail($email);
-            $us=$user->check_auth_register();
-            if($us!=null){
-                if(password_verify($password, $us->password)){
-                    $_SESSION["id_user"]=$us->id;
-                    $_SESSION["name"]=$us->name;
-                    if($us->role=="admin") header("Location: /Wikis/Wiki/index");
-                    else header("Location: /Wikis/Wiki/my_posts");
+        if($_SERVER["REQUEST_METHOD"] == "POST") {
+            $email = $this->validation_input($_POST["email"]);
+            $password = $this->validation_input($_POST["password"]);
+            if (!(empty($password) || empty($email))) {
+                $user = new User();
+                $user->setEmail($email);
+                $us = $user->check_auth_register();
+                if ($us != null) {
+                    if (password_verify($password, $us->password)) {
+                        $_SESSION["id_user"] = $us->id;
+                        $_SESSION["name"] = $us->name;
+                        if ($us->role == "admin") header("Location: /Wikis/Wiki/index");
+                        else header("Location: /Wikis/Wiki/my_posts");
+                        die;
+                    } else {
+                        header("Location: /Wikis/Auth/sign_in/password_incorrect");
+                        die;
+                    }
+                } else {
+                    header("Location: /Wikis/Auth/sign_in/email_not_found");
                     die;
                 }
-                else{
-                    header("Location: /Wikis/Auth/sign_in/password_incorrect");
-                    die;
-                }
-            }
-            else{
-                header("Location: /Wikis/Auth/sign_in/email_not_found");
+            } else {
+                header("Location: /Wikis/Auth/sign_in/enter_all_data");
                 die;
             }
-        }
-        else{
-            header("Location: /Wikis/Auth/sign_in/enter_all_data");
-            die;
         }
     }
 

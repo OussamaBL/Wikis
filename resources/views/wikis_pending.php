@@ -16,7 +16,7 @@
 
 </head>
 
-<body class="animsition">
+<body class="">
 <div class="page-wrapper">
 
     <?php $wikis=$result; ?>
@@ -56,7 +56,7 @@
                                     <th><?= $wiki->category; ?></th>
                                     <th><?= $wiki->date_creation; ?></th>
                                     <th>
-                                        <a class="btn btn-danger" href="/wikis/Wiki/wiki_archive/<?= $wiki->id ?>" onclick="return confirm('Are you sure you want to archive ?');">
+                                        <a class="btn btn-danger mb-3" href="/wikis/Wiki/wiki_archive/<?= $wiki->id ?>" onclick="return confirm('Are you sure you want to archive ?');">
                                            Archive
                                         </a>
                                         <a class="btn btn-success" href="/wikis/Wiki/validate/<?= $wiki->id ?>" onclick="return confirm('Are you sure you want to validate ?');">

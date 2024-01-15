@@ -22,17 +22,17 @@ class CategoryController extends Controller
     }
     function create(): void
     {
-        $category=$this->validation_input($_POST['category']);
-        if(!empty($category)){
-            $ctg=new Category($category);
-            if($ctg->check_exist()==null){
-                $ctg->add();
-                header("Location: /Wikis/Category/index");
-            }
-            else header("Location: /Wikis/Category/add/category_exist");
+        if($_SERVER["REQUEST_METHOD"] == "POST") {
+            $category = $this->validation_input($_POST['category']);
+            if (!empty($category)) {
+                $ctg = new Category($category);
+                if ($ctg->check_exist() == null) {
+                    $ctg->add();
+                    header("Location: /Wikis/Category/index");
+                } else header("Location: /Wikis/Category/add/category_exist");
+            } else header("Location: /Wikis/Category/add/enter_all_data");
+            // TODO: Implement create() method.
         }
-        else header("Location: /Wikis/Category/add/enter_all_data");
-        // TODO: Implement create() method.
     }
 
     function destroy(int $id): void
@@ -47,19 +47,19 @@ class CategoryController extends Controller
 
     function update(int $id): void
     {
-        $category=$this->validation_input($_POST['category']);
-        if(!empty($category)){
-            $ctg=new Category($category,$id);
-            if($ctg->check_exist()==null){
-                $ctg->edit();
-                header("Location: /Wikis/Category/index");
-            }
-            else header("Location: /Wikis/Category/edit/$id/category_exist");
+        if($_SERVER["REQUEST_METHOD"] == "POST") {
+            $category = $this->validation_input($_POST['category']);
+            if (!empty($category)) {
+                $ctg = new Category($category, $id);
+                if ($ctg->check_exist() == null) {
+                    $ctg->edit();
+                    header("Location: /Wikis/Category/index");
+                } else header("Location: /Wikis/Category/edit/$id/category_exist");
+            } else header("Location: /Wikis/Category/edit/$id/enter_all_data");
+
+
+            // TODO: Implement update() method.
         }
-        else header("Location: /Wikis/Category/edit/$id/enter_all_data");
-
-
-        // TODO: Implement update() method.
     }
 
     public function edit(int $id,$msg=null):void{
